@@ -38,6 +38,12 @@ public class ProductResourceTest extends JerseyTest {
 
     private Product  product1 = new Product(1, "product1");
     private Pricing  pricing = new Pricing(54.00);
+    @Captor
+    private ArgumentCaptor<Pricing> pricingArgumentCaptor;
+    @Mock
+    ProductRepository mockProductRepository;
+    @Captor
+    ArgumentCaptor<Product> productArgumentCaptor;
 
     @Override
     protected Application configure() {
@@ -50,12 +56,7 @@ public class ProductResourceTest extends JerseyTest {
         return new ResourceConfig().register(ProductResource.class).register(binder).register(ProductNotFoundExceptionMapper.class).register(PricingNotFoundExceptionMapper.class);
     }
 
-    @Mock
-    ProductRepository mockProductRepository;
 
-
-    @Captor
-    ArgumentCaptor<Product> productArgumentCaptor;
 
     @Test
     public void should_return_200_when_get_all_products_successful() throws Exception {
@@ -137,6 +138,20 @@ public class ProductResourceTest extends JerseyTest {
 
         assertThat(response.getStatus(),is(404));
 
+    }
+
+    @Test
+    public void should_return_201_for_post_one_pricing() throws Exception {
+        when(mockProductRepository.getProductById(1)).thenReturn(product1);
+        Response post = target("/products/1/pricings").request().post(Entity.form(new Form().param("amount", "54.00")));
+
+        assertThat(post.getStatus(),is(201));
+
+        verify(mockProductRepository).savePricingOfProduct(productArgumentCaptor.capture(),pricingArgumentCaptor.capture());
+
+        assertThat(pricingArgumentCaptor.getValue().getAmount(),is(54.00));
+
+        assertTrue(post.getHeaderString("location").contains("/products/1/pricings/"));
     }
 
 

@@ -15,4 +15,6 @@ public interface ProductRepository {
     void saveProduct(Product product);
 
     List<Pricing> getAllPricingsOfProduct(int productId);
+
+    void savePricingOfProduct(Product product, Pricing pricing);
 }
