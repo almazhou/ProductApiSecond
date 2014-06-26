@@ -33,6 +33,12 @@ public class ProductResource {
         return Response.created(URI.create(new ProductJson(uriInfo,product).getUri())).build();
     }
 
+    @Path("/{id}/pricings")
+    public PricingResource getPricingResource(@PathParam("id") int id,@Context UriInfo uriInfo){
+        Product product = productRepository.getProductById(id);
+        return new PricingResource(uriInfo,product,productRepository);
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")

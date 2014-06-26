@@ -1,5 +1,6 @@
 package com.thoughtworks.zhouxuan.resource;
 
+import com.thoughtworks.zhouxuan.domain.Pricing;
 import com.thoughtworks.zhouxuan.domain.Product;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface ProductRepository {
     Product getProductById(int id);
 
     void saveProduct(Product product);
+
+    List<Pricing> getAllPricingsOfProduct(int productId);
 }
