@@ -5,6 +5,9 @@ public class Pricing {
     private double amount;
     private int productId;
 
+    public Pricing() {
+    }
+
     public Pricing(double amount) {
         this.amount = amount;
     }

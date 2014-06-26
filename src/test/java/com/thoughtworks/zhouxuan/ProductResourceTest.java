@@ -6,7 +6,7 @@ import com.thoughtworks.zhouxuan.exception.PricingNotFoundException;
 import com.thoughtworks.zhouxuan.exception.PricingNotFoundExceptionMapper;
 import com.thoughtworks.zhouxuan.exception.ProductNotFoundException;
 import com.thoughtworks.zhouxuan.exception.ProductNotFoundExceptionMapper;
-import com.thoughtworks.zhouxuan.resource.ProductRepository;
+import com.thoughtworks.zhouxuan.repository.ProductRepository;
 import com.thoughtworks.zhouxuan.resource.ProductResource;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;

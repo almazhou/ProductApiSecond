@@ -3,6 +3,7 @@ package com.thoughtworks.zhouxuan.resource;
 import com.thoughtworks.zhouxuan.domain.Pricing;
 import com.thoughtworks.zhouxuan.domain.Product;
 import com.thoughtworks.zhouxuan.json.PricingJson;
+import com.thoughtworks.zhouxuan.repository.ProductRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Form;

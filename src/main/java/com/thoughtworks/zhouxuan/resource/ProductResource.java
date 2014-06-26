@@ -2,6 +2,7 @@ package com.thoughtworks.zhouxuan.resource;
 
 import com.thoughtworks.zhouxuan.domain.Product;
 import com.thoughtworks.zhouxuan.json.ProductJson;
+import com.thoughtworks.zhouxuan.repository.ProductRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
