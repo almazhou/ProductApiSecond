@@ -69,6 +69,11 @@ public class ProductRepositoryTest {
 
     @Test
     public void testGetAllPricingsOfProductById() throws Exception {
+        productRepository.saveProduct(product);
+        productRepository.getProductById(product.getId());
+        productRepository.savePricingOfProduct(product,pricing);
 
+        Pricing pricingResult = productRepository.getAllPricingsOfProductById(product.getId(), pricing.getId());
+        assertThat(pricingResult.getAmount(),is(54.00));
     }
 }

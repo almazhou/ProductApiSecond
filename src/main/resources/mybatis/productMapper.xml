@@ -22,4 +22,8 @@
         select * from pricing where productId= #{productId};
     </select>
 
+    <select id ="getAllPricingsOfProductById">
+        select * from pricing where id = #{id};
+    </select>
+
 </mapper>
