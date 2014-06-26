@@ -1,6 +1,8 @@
 package com.thoughtworks.zhouxuan;
 
 import com.thoughtworks.zhouxuan.domain.Product;
+import com.thoughtworks.zhouxuan.exception.ProductNotFoundException;
+import com.thoughtworks.zhouxuan.exception.ProductNotFoundExceptionMapper;
 import com.thoughtworks.zhouxuan.resource.ProductRepository;
 import com.thoughtworks.zhouxuan.resource.ProductResource;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -31,7 +33,7 @@ public class ProductResourceTest extends JerseyTest {
                 bind(mockProductRepository).to(ProductRepository.class);
             }
         };
-        return new ResourceConfig().register(ProductResource.class).register(binder);
+        return new ResourceConfig().register(ProductResource.class).register(binder).register(ProductNotFoundExceptionMapper.class);
     }
 
     @Mock
@@ -52,5 +54,16 @@ public class ProductResourceTest extends JerseyTest {
 
         assertThat(product.get("id"),is(1));
         assertThat(product.get("name"),is("product1"));
+    }
+
+    @Test
+    public void should_return_404_when_products_not_fond() throws Exception {
+        when(mockProductRepository.getAllProducts()).thenThrow(ProductNotFoundException.class);
+
+        Response response = target("/products").request().get();
+
+        assertThat(response.getStatus(),is(404));
+
+
     }
 }
