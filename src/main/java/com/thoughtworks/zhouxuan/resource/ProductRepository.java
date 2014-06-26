@@ -9,4 +9,5 @@ public interface ProductRepository {
     public List<Product> getAllProducts();
 
 
+    Product getProductById(int id);
 }

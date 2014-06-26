@@ -64,6 +64,20 @@ public class ProductResourceTest extends JerseyTest {
 
         assertThat(response.getStatus(),is(404));
 
+    }
 
+    @Test
+    public void should_get_200_when_get_product_by_id() throws Exception {
+        when(mockProductRepository.getProductById(1)).thenReturn(new Product(1,"product1"));
+
+        Response response = target("/products/1").request().get();
+
+        assertThat(response.getStatus(),is(200));
+
+        Map list = response.readEntity(Map.class);
+
+
+        assertThat(list.get("id"),is(1));
+        assertThat(list.get("name"),is("product1"));
     }
 }

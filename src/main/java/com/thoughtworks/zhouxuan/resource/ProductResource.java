@@ -6,6 +6,7 @@ import com.thoughtworks.zhouxuan.json.ProductJson;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -24,6 +25,13 @@ public class ProductResource {
         List<Product> allProducts = productRepository.getAllProducts();
         List<ProductJson> productsJsons = allProducts.stream().map(product -> new ProductJson(uriInfo, product)).collect(Collectors.toList());
         return productsJsons;
+    }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+public ProductJson getProductById(@PathParam("id") int id , @Context UriInfo uriInfo){
+        Product productById = productRepository.getProductById(id);
+        return new ProductJson(uriInfo,productById);
     }
 }
