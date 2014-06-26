@@ -2,6 +2,8 @@ package com.thoughtworks.zhouxuan;
 
 import com.thoughtworks.zhouxuan.domain.Pricing;
 import com.thoughtworks.zhouxuan.domain.Product;
+import com.thoughtworks.zhouxuan.exception.PricingNotFoundException;
+import com.thoughtworks.zhouxuan.exception.PricingNotFoundExceptionMapper;
 import com.thoughtworks.zhouxuan.exception.ProductNotFoundException;
 import com.thoughtworks.zhouxuan.exception.ProductNotFoundExceptionMapper;
 import com.thoughtworks.zhouxuan.resource.ProductRepository;
@@ -45,7 +47,7 @@ public class ProductResourceTest extends JerseyTest {
                 bind(mockProductRepository).to(ProductRepository.class);
             }
         };
-        return new ResourceConfig().register(ProductResource.class).register(binder).register(ProductNotFoundExceptionMapper.class);
+        return new ResourceConfig().register(ProductResource.class).register(binder).register(ProductNotFoundExceptionMapper.class).register(PricingNotFoundExceptionMapper.class);
     }
 
     @Mock
@@ -124,4 +126,18 @@ public class ProductResourceTest extends JerseyTest {
         assertThat(pricing.get("amount"),is(54.00));
 
     }
+
+
+    @Test
+    public void should_return_404_when_pricing_not_fond() throws Exception {
+        when(mockProductRepository.getProductById(1)).thenReturn(product1);
+        when(mockProductRepository.getAllPricingsOfProduct(1)).thenThrow(PricingNotFoundException.class);
+
+        Response response = target("/products/1/pricings").request().get();
+
+        assertThat(response.getStatus(),is(404));
+
+    }
+
+
 }
