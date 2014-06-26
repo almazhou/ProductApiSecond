@@ -4,10 +4,7 @@ import com.thoughtworks.zhouxuan.domain.Pricing;
 import com.thoughtworks.zhouxuan.domain.Product;
 import com.thoughtworks.zhouxuan.json.PricingJson;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -41,6 +38,14 @@ public class PricingResource {
         Pricing pricing = new Pricing(Double.valueOf(amount).doubleValue());
         productRepository.savePricingOfProduct(product,pricing);
         return Response.created(URI.create(new PricingJson(uriInfo,product,pricing).getUri())).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{pricingId}")
+    public PricingJson getOnePricing(@PathParam("pricingId") int pricingId){
+        Pricing pricing = productRepository.getAllPricingsOfProductById(product.getId(), pricingId);
+        return new PricingJson(uriInfo,product,pricing);
     }
 
 

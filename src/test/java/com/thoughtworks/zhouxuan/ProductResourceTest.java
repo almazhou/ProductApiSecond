@@ -147,12 +147,24 @@ public class ProductResourceTest extends JerseyTest {
 
         assertThat(post.getStatus(),is(201));
 
-        verify(mockProductRepository).savePricingOfProduct(productArgumentCaptor.capture(),pricingArgumentCaptor.capture());
+        verify(mockProductRepository).savePricingOfProduct(productArgumentCaptor.capture(), pricingArgumentCaptor.capture());
 
         assertThat(pricingArgumentCaptor.getValue().getAmount(),is(54.00));
 
         assertTrue(post.getHeaderString("location").contains("/products/1/pricings/"));
     }
 
+    @Test
+    public void should_get_one_pricing_and_return_200() throws Exception {
+        when(mockProductRepository.getProductById(eq(1))).thenReturn(product1);
+        when(mockProductRepository.getAllPricingsOfProductById(1,1)).thenReturn(pricing);
+        Response response = target("/products/1/pricings/1").request().get();
 
+        assertThat(response.getStatus(),is(200));
+
+        Map list = response.readEntity(Map.class);
+
+        assertThat(list.get("amount"),is(54.00));
+
+    }
 }
