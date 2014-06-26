@@ -10,17 +10,23 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -38,6 +44,10 @@ public class ProductResourceTest extends JerseyTest {
 
     @Mock
     ProductRepository mockProductRepository;
+
+
+    @Captor
+    ArgumentCaptor<Product> productArgumentCaptor;
 
 
     @Test
@@ -79,5 +89,20 @@ public class ProductResourceTest extends JerseyTest {
 
         assertThat(list.get("id"),is(1));
         assertThat(list.get("name"),is("product1"));
+    }
+
+    @Test
+    public void should_return_201_for_post_one_product() throws Exception {
+        Response post = target("/products").request().post(Entity.form(new Form().param("name", "product1")));
+
+        assertThat(post.getStatus(),is(201));
+
+        verify(mockProductRepository).saveProduct(productArgumentCaptor.capture());
+
+        assertThat(productArgumentCaptor.getValue().getName(),is("product1"));
+
+        assertTrue(post.getHeaderString("location").contains("/products/"));
+
+
     }
 }
