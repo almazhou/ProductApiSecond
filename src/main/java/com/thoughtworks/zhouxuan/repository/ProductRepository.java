@@ -19,5 +19,5 @@ public interface ProductRepository {
 
     void savePricingOfProduct(@Param("product")Product product, @Param("pricing")Pricing pricing);
 
-    Pricing getAllPricingsOfProductById(int productId, int pricingId);
+    Pricing getAllPricingsOfProductById(@Param("productId") int productId,@Param("pricingId") int pricingId);
 }
